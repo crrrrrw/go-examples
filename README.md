@@ -1,2 +1,2 @@
-# go-examples
-go in action
+## go 语言使用案例
+意在学习并使用golang，熟悉常用语法，特性等。
