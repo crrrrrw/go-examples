@@ -1,4 +1,4 @@
-package pack
+package utils
 
 type Price float64
 type Count int64
