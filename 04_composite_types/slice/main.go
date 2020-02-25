@@ -18,13 +18,22 @@ import "fmt"
 	- 二者不同点：方式1可以使用slice和arr都改变数组元素；
 				但是方式2 make创建的切片，隐式的创建了一个数组，但是这个数组只能slice访问，make方法底层维护，对外不可见
 	- 方式3：定义一个切片，直接指定具体的数组，原理类似于make方式
+6. 注意事项
+	- 切片初始化 var slice = arr[startIndex : endIndex] ; 从数组下标 startIndex 取到 endIndex， 不含 arr[endIndex]。
+	- 切边初始化时仍然不能越界，范围在 [0-len(arr)] 之间，但可以动态增长。
+	- 简写：
+		- var slice = arr[0 : endIndex] <=> var slice = arr[:endIndex]
+		- var slice = arr[startIndex : len(arr)] <=> var slice = arr[startIndex:]
+		- var slice = arr[0 : len(arr)] <=> var slice = arr[:]
+	- cap 内置函数，用于统计切片的容量，即存放元素的最大值。
+	- 切片可以继续切片
 **/
 func main() {
 
 	// 数组
 	var intArr [5]int = [...]int{1, 2, 3, 4, 5}
 	// 方式1：声明一个切片名为 slice1;引用了数组 intArr;引用 intArr 下标 1到3，左闭右开 [1,3)
-	slice1 := intArr[1:3]
+	slice1 := intArr[1:4]
 	fmt.Println("intArr=", intArr)
 	fmt.Printf("slice1=%v, 长度=%d, 容量=%d\n", slice1, len(slice1), cap(slice1))
 
@@ -42,4 +51,34 @@ func main() {
 	// 方式3
 	var slice3 []string = []string{"aa", "bb", "cc"}
 	fmt.Printf("slice3=%v, 长度=%d, 容量=%d\n", slice3, len(slice3), cap(slice2))
+
+	/**
+	遍历切片，与数组一样
+	**/
+	for i := 0; i < len(slice1); i++ {
+		fmt.Printf("slice[%d]=%v ", i, slice1[i])
+	}
+
+	fmt.Println()
+	for i, v := range slice1 {
+		fmt.Printf("slice[%d]=%v ", i, v)
+	}
+
+	fmt.Println()
+	/**
+	slice 简写
+	**/
+	fmt.Printf("intArr[:4]=%v\n", intArr[:4])
+	fmt.Printf("intArr[3:]=%v\n", intArr[3:])
+	fmt.Printf("intArr[:]=%v\n", intArr[:])
+
+	/**
+	对切片继续切片
+	**/
+	var slice4 = slice1[1:]
+	fmt.Printf("slice4=%v, 长度=%d, 容量=%d\n", slice4, len(slice4), cap(slice4))
+	slice4[0] = 999
+	fmt.Println("intArr=", intArr)
+	fmt.Println("slice1=", slice1)
+	fmt.Println("slice4=", slice4)
 }
