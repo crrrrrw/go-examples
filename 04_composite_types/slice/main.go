@@ -27,6 +27,10 @@ import "fmt"
 		- var slice = arr[0 : len(arr)] <=> var slice = arr[:]
 	- cap 内置函数，用于统计切片的容量，即存放元素的最大值。
 	- 切片可以继续切片
+7. append内置函数：可以动态地对切片进行追加
+	- append函数底层是对数组进行扩容
+	- 底层先创建一个扩容了的newArr,然后将oldArr数据拷贝到newArr上，然后重新引用返回newArr，oldArr将会被垃圾回收
+8. copy函数：拷贝切片
 **/
 func main() {
 
@@ -81,4 +85,19 @@ func main() {
 	fmt.Println("intArr=", intArr)
 	fmt.Println("slice1=", slice1)
 	fmt.Println("slice4=", slice4)
+
+	/**
+	append函数
+	**/
+	fmt.Printf("对slice1进行append=%v, 原slice1=%v\n", append(slice1, 101, 102, 103), slice1)
+	fmt.Printf("slice1=%v\n", append(slice1, slice1...))
+
+	/**
+	copy函数
+	**/
+	var slice5 = make([]int, 10)
+	copy(slice5, slice4)
+	fmt.Printf("slice4=%v, slice5=%v\n", slice4, slice5)
+	slice4[1] = 10000 // slice4 与 slice5 的数据空间是相独立的，相互不影响
+	fmt.Printf("slice4=%v, slice5=%v\n", slice4, slice5)
 }
